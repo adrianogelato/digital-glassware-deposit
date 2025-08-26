@@ -155,8 +155,10 @@ flowchart TD
 
 ## Development Notes / Challenges
 
-- [Challenge / Solution]  
-- [Challenge / Solution]  
+- Enable local development and deployment: Communication of frontend with backend failed. 
+    - Solution: Frontend was calling itself and never triggered the backend request.
+    - Usage of ChatGPT
+-   
 - [Challenge / Solution]  
 
 ---
@@ -180,21 +182,45 @@ digital-glassware-deposit/
 └─ package.json       # root file with concurrently setup
 ```
 
-### Production deployment
+## Production deployment
 
-frontend URL: https://digital-glassware-deposit.vercel.app  
-backend URL: https://digital-glassware-deposit.onrender.com
+This project is deployed using **Vercel (frontend)** and **Render (backend)**.
+- frontend URL: https://digital-glassware-deposit.vercel.app  
+- backend URL: https://digital-glassware-deposit.onrender.com
 
+### Backend (Render)
+- Hosted on [Render](https://render.com/).
+- Runs the Express.js API (`backend/index.js`).
+- Example production URL: `https://<your-backend>.onrender.com`
+
+### Frontend (Vercel)
+- Hosted on [Vercel](https://vercel.com/).
+- Built with Vite + React (`frontend/`).
+- Example production URL: `https://<your-frontend>.vercel.app`
+
+### Environment Variables
+The frontend requires an environment variable pointing to the backend API:
+
+| Variable        | Example Value                         | Description                         |
+|-----------------|---------------------------------------|-------------------------------------|
+| `VITE_API_URL`  | `http://localhost:5001` (local)       | Backend API base URL for local dev. |
+| `VITE_API_URL`  | `https://<your-backend>.onrender.com` | Backend API base URL for production |
+```
+
+```bash
+# .env.example
+VITE_API_URL=http://localhost:5001
+```
 
 ---
 
-### How to Run Locally
+## How to Run Locally
 
 1. **Clone the repository**
 
 ```bash
-git clone https://github.com/your-username/my-app.git
-cd my-app
+git clone https://github.com/adrianogelato/digital-glassware-deposit.git
+cd digital-glassware-deposit
 ```
 
 2. **Start from root**
