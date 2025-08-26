@@ -7,19 +7,12 @@ function App() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    // Debug: show which API URL is being used
+    console.log("VITE_API_URL at runtime:", import.meta.env.VITE_API_URL);
+
     async function fetchBackend() {
       try {
-        const response = await fetch('/api/data'); // use relative path to hit Vite proxy
-        console.log("Response status:", response.status);
-        console.log("Response headers:", [...response.headers.entries()]);
-
-        if (!response.ok) {
-          const text = await response.text();
-          console.error("Response body:", text);
-          throw new Error(`HTTP ${response.status}`);
-        }
-
-        const data = await response.json();
+        const data = await getData(); // use central API helper
         console.log("Backend data:", data);
         setBackendData(data);
       } catch (err) {
