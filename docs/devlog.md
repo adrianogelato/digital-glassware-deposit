@@ -24,4 +24,7 @@ Since I was on a the look for a new job with a focus on data analysis and progra
 
 I wanted to meet one major requirement: Exert the least possible interference with the payment process for the bar crew and guests.
 
-## 
+## Make the framework work
+
+Setup of frontend and backend.
+make it work in local dev environment
