@@ -6,10 +6,19 @@ const { Pool } = require("pg");
 const app = express();
 const PORT = process.env.PORT || 5001;
 
-// PostgreSQL connection (Supabase) - works for both local dev and production
+// PostgreSQL connection (Supabase) - Enhanced for production deployment
+const isProduction = process.env.NODE_ENV === 'production';
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: process.env.DATABASE_URL?.includes('supabase.co') ? { rejectUnauthorized: false } : false
+  ssl: process.env.DATABASE_URL?.includes('supabase.co') ? { 
+    rejectUnauthorized: false,
+    // Force SSL for production
+    require: isProduction 
+  } : false,
+  // Connection pool settings for production
+  max: isProduction ? 20 : 5,
+  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 10000,
 });
 
 // Allow cross-origin requests (needed for Vercel frontend)
@@ -60,6 +69,14 @@ function generateRandomCharacter() {
 // Initialize database table
 async function initDatabase() {
   try {
+    console.log('🔄 Attempting to connect to database...');
+    console.log('Database URL configured:', process.env.DATABASE_URL ? 'Yes' : 'No');
+    
+    // Test connection first
+    const client = await pool.connect();
+    console.log('✅ Database connection successful');
+    client.release();
+    
     await pool.query(`
       CREATE TABLE IF NOT EXISTS characters (
         id SERIAL PRIMARY KEY,
@@ -69,9 +86,11 @@ async function initDatabase() {
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
     `);
-    console.log("Database table initialized");
+    console.log("✅ Database table initialized");
   } catch (err) {
-    console.error("Error initializing database:", err);
+    console.error("❌ Error initializing database:", err.message);
+    console.error("❌ Error code:", err.code);
+    console.error("❌ Error details:", err);
   }
 }
 
