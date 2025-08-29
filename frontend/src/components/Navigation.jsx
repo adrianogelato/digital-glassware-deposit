@@ -1,34 +1,18 @@
 function Navigation({ currentPage, setCurrentPage }) {
   return (
-    <nav style={{ padding: "1rem 0", borderBottom: "2px solid #ddd", marginBottom: "2rem" }}>
-      <div style={{ display: "flex", gap: "2rem", alignItems: "center" }}>
-        <h1 style={{ margin: 0, color: "#333" }}>Character Generator</h1>
-        <div style={{ display: "flex", gap: "1rem" }}>
+    <nav className="navigation">
+      <div className="navigation-content">
+        <h1 className="navigation-title">Character Generator</h1>
+        <div className="navigation-buttons">
           <button
             onClick={() => setCurrentPage("home")}
-            style={{
-              padding: "8px 16px",
-              backgroundColor: currentPage === "home" ? "#4CAF50" : "#f0f0f0",
-              color: currentPage === "home" ? "white" : "#333",
-              border: "1px solid #ddd",
-              borderRadius: "4px",
-              cursor: "pointer",
-              fontWeight: currentPage === "home" ? "bold" : "normal",
-            }}
+            className={`nav-button ${currentPage === "home" ? "nav-button-active" : ""}`}
           >
             🏠 Home
           </button>
           <button
             onClick={() => setCurrentPage("about")}
-            style={{
-              padding: "8px 16px",
-              backgroundColor: currentPage === "about" ? "#4CAF50" : "#f0f0f0",
-              color: currentPage === "about" ? "white" : "#333",
-              border: "1px solid #ddd",
-              borderRadius: "4px",
-              cursor: "pointer",
-              fontWeight: currentPage === "about" ? "bold" : "normal",
-            }}
+            className={`nav-button ${currentPage === "about" ? "nav-button-active" : ""}`}
           >
             ℹ️ About
           </button>

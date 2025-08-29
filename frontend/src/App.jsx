@@ -1,8 +1,11 @@
+import { ThemeProvider } from './contexts/ThemeContext';
+import { ThemeToggle } from './components'; // Using your barrel export
+import './App.css'; // Your existing CSS import
+
 import { useState, useEffect } from "react";
 import { getData, generateCharacter, saveCharacter, getAllCharacters, deleteCharacter } from "./api";
 import { Navigation, StatusSummary } from "./components";
 import { HomePage, AboutPage } from "./pages";
-
 
 function App() {
   const [currentPage, setCurrentPage] = useState("home");
@@ -103,29 +106,40 @@ function App() {
   };
 
   return (
-    <div style={{ padding: "2rem", fontFamily: "sans-serif", maxWidth: "1200px", margin: "0 auto" }}>
-      <Navigation currentPage={currentPage} setCurrentPage={setCurrentPage} />
+    <ThemeProvider>
+      <div className="app-container">
+        {/* Header with Navigation and Theme Toggle */}
+        <header className="app-header container">
+          <div className="flex justify-between items-center p-4">
+            <Navigation currentPage={currentPage} setCurrentPage={setCurrentPage} />
+            <ThemeToggle />
+          </div>
+        </header>
 
-      {currentPage === "home" ? (
-        <HomePage
-          currentCharacter={currentCharacter}
-          savedCharacters={savedCharacters}
-          isGenerating={isGenerating}
-          isSaving={isSaving}
-          isLoading={isLoading}
-          handleGenerateCharacter={handleGenerateCharacter}
-          handleSaveCharacter={handleSaveCharacter}
-          handleDeleteCharacter={handleDeleteCharacter}
-          loadSavedCharacters={loadSavedCharacters}
-        />
-      ) : (
-        <AboutPage />
-      )}
+        {/* Main Content */}
+        <main className="container">
+          {currentPage === "home" ? (
+            <HomePage
+              currentCharacter={currentCharacter}
+              savedCharacters={savedCharacters}
+              isGenerating={isGenerating}
+              isSaving={isSaving}
+              isLoading={isLoading}
+              handleGenerateCharacter={handleGenerateCharacter}
+              handleSaveCharacter={handleSaveCharacter}
+              handleDeleteCharacter={handleDeleteCharacter}
+              loadSavedCharacters={loadSavedCharacters}
+            />
+          ) : (
+            <AboutPage />
+          )}
 
-      {currentPage === "home" && (
-        <StatusSummary backendData={backendData} error={error} databaseStatus={databaseStatus} />
-      )}
-    </div>
+          {currentPage === "home" && (
+            <StatusSummary backendData={backendData} error={error} databaseStatus={databaseStatus} />
+          )}
+        </main>
+      </div>
+    </ThemeProvider>
   );
 }
 
